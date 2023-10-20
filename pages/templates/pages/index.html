@@ -1,0 +1,162 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'pages/style.css' %}">
+    <script src="{% static 'pages/js/modal.js' %}" defer></script>
+    <script src="{% static 'pages/js/phone_validate.js' %}" defer></script>
+    <script src="{% static 'pages/js/activate_input.js' %}" defer></script>
+    <title>Сайт</title>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="content">
+            <header class="head">
+                <div class="head__container">
+                    <div class="head__bar">
+                        <div class="head__image">
+                            <img src="{% static '../static/pages/images/logo.png' %}" alt="" class="head__logo">
+                        </div>
+                        <div class="head__right">
+                            <button class="head__button" id="entry">Оставить заявку</button>
+                            <button class="head__button" id="message">Написать в ватсап</button>
+                            <button class="head__button" id="call">Позвонить</button>
+                        </div>
+
+                        <div class="modal" id="modal_entry">
+                            <div class="modal-header">
+                                <div class="title">Оставить заявку</div>
+                                <button data-close-button class="close-button" onclick="closeModal(1)">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="description">
+                                    Изначально, клиент должен подписать согласие на обработку персональных данных для того, чтобы наша организация в дальнейшем имела право оказать ему услугу не нарушая Федеральный закон от 14.07.2022 № 266-ФЗ, далее – Закон № 266-ФЗ.
+                                </div>
+                                <form action="{% url 'send_phone' %}" method="POST">
+                                    {% csrf_token %}
+                                    <div class="conditon">
+                                        Текст согласия на обработку персональных данных
+                                    </div>
+                                    <div class="page__checkbox">
+                                        <div class="checkbox-wrapper-4">
+                                            <input class="inp-cbx" id="option1" type="checkbox"/>
+                                            <label class="cbx" for="option1"><span>
+                                            <svg width="12px" height="10px">
+                                            <use xlink:href="#check-4"></use>
+                                            </svg></span></label>
+                                            <svg class="inline-svg">
+                                            <symbol id="check-4" viewbox="0 0 12 10">
+                                                <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+                                            </symbol>
+                                            </svg>
+                                        </div>
+                                        <div class="page__btn">
+                                            <button type="button" class="checkbox__button" id="button" disabled>Даю согласие, продолжить</button>
+                                        </div>
+                                    </div>
+                                    <div class="page__phone hidden" id="phone-block">
+                                        <input type="tel" placeholder="+89997777777" class="page__field" id="phone" name="phone" maxlength="12">
+                                        <span class="page__label">Введите номер телефона в формате 89997777777</span>
+                                        <button class="page__send" id="send-button" disabled>Отправить</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div id="overlay-entry" class="overlay" onclick="closeModal(1)"></div>
+
+                        <div class="modal" id="modal_message">
+                            <div class="modal-header">
+                                <div class="title">Написать в ватсап</div>
+                                <button data-close-button class="close-button" onclick="closeModal(2)">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="description">
+                                    Изначально, клиент должен подписать согласие на обработку персональных данных для того, чтобы наша организация в дальнейшем имела право оказать ему услугу не нарушая Федеральный закон от 14.07.2022 № 266-ФЗ, далее – Закон № 266-ФЗ.
+                                </div>
+                                <form action="{% url 'send_phone' %}" method="POST">
+                                    {% csrf_token %}
+                                    <div class="conditon">
+                                        Текст согласия на обработку персональных данных
+                                    </div>
+                                    <div class="page__checkbox">
+                                        <div class="checkbox-wrapper-4">
+                                            <input class="inp-cbx" id="option2" type="checkbox"/>
+                                            <label class="cbx" for="option2"><span>
+                                            <svg width="12px" height="10px">
+                                            <use xlink:href="#check-4"></use>
+                                            </svg></span></label>
+                                            <svg class="inline-svg">
+                                            <symbol id="check-4" viewbox="0 0 12 10">
+                                                <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+                                            </symbol>
+                                            </svg>
+                                        </div>
+                                        <div class="page__btn">
+                                            <button type="button" class="checkbox__button" id="button-2" disabled>Даю согласие, продолжить</button>
+                                        </div>
+                                    </div>
+                                    <div class="page__phone_gap hidden" id="phone-block-2">
+                                        <a href="https://api.whatsapp.com/send?phone=79012088283" class="page__send working page__send_long" id="send-button">Нажмите, чтобы написать на ватсап</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div id="overlay-write" class="overlay" onclick="closeModal(2)"></div>
+                        
+                        <div class="modal" id="modal_call">
+                            <div class="modal-header">
+                                <div class="title">Позвонить</div>
+                                <button data-close-button class="close-button" onclick="closeModal(3)">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="description">
+                                    Изначально, клиент должен подписать согласие на обработку персональных данных для того, чтобы наша организация в дальнейшем имела право оказать ему услугу не нарушая Федеральный закон от 14.07.2022 № 266-ФЗ, далее – Закон № 266-ФЗ.
+                                </div>
+                                <form action="{% url 'send_phone' %}" method="POST">
+                                    {% csrf_token %}
+                                    <div class="conditon">
+                                        Текст согласия на обработку персональных данных
+                                    </div>
+                                    <div class="page__checkbox">
+                                        <div class="checkbox-wrapper-4">
+                                            <input class="inp-cbx" id="option3" type="checkbox"/>
+                                            <label class="cbx" for="option3"><span>
+                                            <svg width="12px" height="10px">
+                                            <use xlink:href="#check-4"></use>
+                                            </svg></span></label>
+                                            <svg class="inline-svg">
+                                            <symbol id="check-4" viewbox="0 0 12 10">
+                                                <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+                                            </symbol>
+                                            </svg>
+                                        </div>
+                                        <div class="page__btn">
+                                            <button type="button" class="checkbox__button" id="button-3" disabled>Даю согласие, продолжить</button>
+                                        </div>
+                                    </div>
+                                    <div class="page__phone_gap hidden" id="phone-block-3">
+                                        <a href="tel:+79012088284" class="page__send working page__send_long" id="send-button">Позвонить</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div id="overlay-call" class="overlay" onclick="closeModal(3)"></div>
+                    </div>
+                </div>
+            </header>
+            <section class="main">
+
+            </section>
+        </div>
+        <footer class="foot">
+            <div class="footer__container">
+                <div class="foot__bar">
+                    {{ footer.text }}
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
